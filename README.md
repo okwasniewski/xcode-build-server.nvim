@@ -9,7 +9,7 @@ A Neovim plugin that seamlessly integrates xcode-build-server to enable sourceki
 - ⚙️ **Configuration Generation**: Automatically creates `buildServer.json` for sourcekit-lsp
 - 🔄 **LSP Integration**: Seamless integration with Neovim's built-in LSP client
 - 🏥 **Health Checks**: Built-in diagnostics to verify your setup
-- 🚀 **Auto Setup**: Optional automatic configuration when opening Xcode projects
+- 🚀 **Auto Setup**: Optional automatic configuration when opening Xcode projects (opt-in)
 
 ## Requirements
 
@@ -51,7 +51,7 @@ The plugin works out of the box with sensible defaults. You can customize it by 
 require('xcode-build-server').setup({
   search_depth = 3,           -- How deep to search for projects
   timeout = 10000,            -- Command timeout in milliseconds  
-  auto_setup = true,          -- Auto-setup when opening Xcode projects
+  auto_setup = false,         -- Auto-setup when opening Xcode projects (opt-in)
   restart_lsp = true,         -- Restart LSP after configuration
   build_server_path = "xcode-build-server",  -- Path to executable
   picker = {
@@ -124,6 +124,22 @@ require('xcode-build-server').setup({
 ```
 
 The plugin automatically falls back to `vim.ui.select` if the configured picker is not available.
+
+### Auto Setup (Optional)
+
+By default, the plugin requires manual setup using `:XcodeBuildServerSetup`. You can enable automatic configuration by setting `auto_setup = true`:
+
+```lua
+require('xcode-build-server').setup({
+  auto_setup = true  -- Enable automatic buildServer.json generation
+})
+```
+
+When enabled, auto setup will:
+- Automatically detect Xcode projects when you open files
+- For single scheme projects: configure silently
+- For multiple schemes: prompt you to select a scheme using your configured picker
+- Skip projects that already have buildServer.json
 
 ## Usage
 

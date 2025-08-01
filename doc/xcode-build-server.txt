@@ -66,7 +66,7 @@ The plugin can be configured by passing options to the setup function:
     require('xcode-build-server').setup({
       search_depth = 3,           -- How deep to search for projects
       timeout = 10000,            -- Command timeout in milliseconds
-      auto_setup = true,          -- Auto-setup when opening Xcode projects
+      auto_setup = false,         -- Auto-setup when opening Xcode projects (opt-in)
       restart_lsp = true,         -- Restart LSP after configuration
       build_server_path = "xcode-build-server",  -- Path to executable
       picker = {
@@ -91,7 +91,7 @@ The plugin can be configured by passing options to the setup function:
 Options:~
     search_depth	(number)	Maximum depth to search for Xcode projects
     timeout		(number)	Timeout for xcodebuild commands (ms)
-    auto_setup		(boolean)	Automatically setup buildServer.json
+    auto_setup		(boolean)	Automatically setup buildServer.json (default: false)
     restart_lsp		(boolean)	Prompt to restart LSP after setup
     build_server_path	(string)	Path to xcode-build-server executable
     picker		(table)		Picker configuration options
@@ -208,13 +208,16 @@ Q: Plugin doesn't detect my workspace
 A: Make sure you're in the correct directory containing the .xcworkspace file.
    The plugin searches up to 3 levels deep by default.
 
-Q: How do I disable auto-setup?
-A: Set auto_setup = false in your configuration:
+Q: How do I enable automatic setup?
+A: Set auto_setup = true in your configuration:
 >
     require('xcode-build-server').setup({
-      auto_setup = false
+      auto_setup = true
     })
 <
+Auto-setup is disabled by default. When enabled, it will automatically
+detect Xcode projects and configure buildServer.json. For projects with
+multiple schemes, it will prompt you to select one.
 
 Q: How do I use telescope or fzf-lua for selection instead of vim.ui.select?
 A: Configure the picker backend in your setup:
