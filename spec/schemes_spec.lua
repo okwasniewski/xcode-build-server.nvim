@@ -21,9 +21,9 @@ Information about project "TestApp":
         WidgetExtension
 
 ]]
-      
+
       local result = schemes.parse_schemes_output(output)
-      assert.same({'TestApp', 'TestAppTests', 'WidgetExtension'}, result)
+      assert.same({ 'TestApp', 'TestAppTests', 'WidgetExtension' }, result)
     end)
 
     it('handles output without schemes section', function()
@@ -36,7 +36,7 @@ Information about project "TestApp":
         Debug
         Release
 ]]
-      
+
       local result = schemes.parse_schemes_output(output)
       assert.same({}, result)
     end)
@@ -50,7 +50,7 @@ Information about project "TestApp":
         Debug
         Release
 ]]
-      
+
       local result = schemes.parse_schemes_output(output)
       assert.same({}, result)
     end)
@@ -66,9 +66,9 @@ Information about project "TestApp":
         Release
         SomeOtherLine
 ]]
-      
+
       local result = schemes.parse_schemes_output(output)
-      assert.same({'TestApp', 'TestAppTests'}, result)
+      assert.same({ 'TestApp', 'TestAppTests' }, result)
     end)
 
     it('ignores Information about project lines in schemes section', function()
@@ -79,9 +79,9 @@ Information about project "TestApp":
         TestApp
         TestAppTests
 ]]
-      
+
       local result = schemes.parse_schemes_output(output)
-      assert.same({'TestApp', 'TestAppTests'}, result)
+      assert.same({ 'TestApp', 'TestAppTests' }, result)
     end)
   end)
 
@@ -92,25 +92,25 @@ Information about project "TestApp":
     end)
 
     it('returns first scheme containing "app" (case insensitive)', function()
-      local scheme_list = {'TestLib', 'MyApp', 'TestAppTests'}
+      local scheme_list = { 'TestLib', 'MyApp', 'TestAppTests' }
       local result = schemes.get_default_scheme(scheme_list)
       assert.equals('MyApp', result)
     end)
 
     it('returns first scheme containing "App" (case insensitive)', function()
-      local scheme_list = {'TestLib', 'MyAppKit', 'TestTests'}
+      local scheme_list = { 'TestLib', 'MyAppKit', 'TestTests' }
       local result = schemes.get_default_scheme(scheme_list)
       assert.equals('MyAppKit', result)
     end)
 
     it('returns first scheme when none contain "app"', function()
-      local scheme_list = {'TestLib', 'MyKit', 'TestTests'}
+      local scheme_list = { 'TestLib', 'MyKit', 'TestTests' }
       local result = schemes.get_default_scheme(scheme_list)
       assert.equals('TestLib', result)
     end)
 
     it('returns first scheme containing "app" even if not first in list', function()
-      local scheme_list = {'TestLib', 'MyKit', 'MainApp', 'TestTests'}
+      local scheme_list = { 'TestLib', 'MyKit', 'MainApp', 'TestTests' }
       local result = schemes.get_default_scheme(scheme_list)
       assert.equals('MainApp', result)
     end)
@@ -121,14 +121,14 @@ Information about project "TestApp":
       -- Mock utils.dir_exists to return false
       local utils = require('xcode-build-server.utils')
       local original_dir_exists = utils.dir_exists
-      
+
       utils.dir_exists = function(path)
         return false
       end
-      
+
       local result = schemes.list_schemes('/non/existent/project.xcodeproj')
       assert.same({}, result)
-      
+
       -- Restore original function
       utils.dir_exists = original_dir_exists
     end)
@@ -138,26 +138,26 @@ Information about project "TestApp":
       local utils = require('xcode-build-server.utils')
       local original_dir_exists = utils.dir_exists
       local original_execute_command = utils.execute_command
-      
+
       utils.dir_exists = function(path)
         return true
       end
-      
+
       utils.execute_command = function(cmd, opts)
         assert.is_not_nil(cmd:find('-project'))
         assert.is_not_nil(cmd:find('TestApp.xcodeproj'))
         assert.is_not_nil(cmd:find('-list'))
         return 'Schemes:\n    TestApp\n', nil
       end
-      
+
       local original_parse = schemes.parse_schemes_output
       schemes.parse_schemes_output = function(output)
-        return {'TestApp'}
+        return { 'TestApp' }
       end
-      
+
       local result = schemes.list_schemes('/path/to/TestApp.xcodeproj')
-      assert.same({'TestApp'}, result)
-      
+      assert.same({ 'TestApp' }, result)
+
       -- Restore original functions
       utils.dir_exists = original_dir_exists
       utils.execute_command = original_execute_command
@@ -169,26 +169,26 @@ Information about project "TestApp":
       local utils = require('xcode-build-server.utils')
       local original_dir_exists = utils.dir_exists
       local original_execute_command = utils.execute_command
-      
+
       utils.dir_exists = function(path)
         return true
       end
-      
+
       utils.execute_command = function(cmd, opts)
         assert.is_not_nil(cmd:find('-workspace'))
         assert.is_not_nil(cmd:find('TestApp.xcworkspace'))
         assert.is_not_nil(cmd:find('-list'))
         return 'Schemes:\n    TestApp\n', nil
       end
-      
+
       local original_parse = schemes.parse_schemes_output
       schemes.parse_schemes_output = function(output)
-        return {'TestApp'}
+        return { 'TestApp' }
       end
-      
+
       local result = schemes.list_schemes('/path/to/TestApp.xcworkspace')
-      assert.same({'TestApp'}, result)
-      
+      assert.same({ 'TestApp' }, result)
+
       -- Restore original functions
       utils.dir_exists = original_dir_exists
       utils.execute_command = original_execute_command
@@ -200,18 +200,18 @@ Information about project "TestApp":
       local utils = require('xcode-build-server.utils')
       local original_dir_exists = utils.dir_exists
       local original_execute_command = utils.execute_command
-      
+
       utils.dir_exists = function(path)
         return true
       end
-      
+
       utils.execute_command = function(cmd, opts)
         return nil, 'Command failed'
       end
-      
+
       local result = schemes.list_schemes('/path/to/TestApp.xcodeproj')
       assert.same({}, result)
-      
+
       -- Restore original functions
       utils.dir_exists = original_dir_exists
       utils.execute_command = original_execute_command
@@ -223,12 +223,12 @@ Information about project "TestApp":
       -- Mock list_schemes to return test schemes
       local original_list_schemes = schemes.list_schemes
       schemes.list_schemes = function(project_path)
-        return {'TestApp', 'TestAppTests', 'WidgetExtension'}
+        return { 'TestApp', 'TestAppTests', 'WidgetExtension' }
       end
-      
+
       local result = schemes.validate_scheme('/path/to/project.xcodeproj', 'TestApp')
       assert.is_true(result)
-      
+
       -- Restore original function
       schemes.list_schemes = original_list_schemes
     end)
@@ -237,12 +237,12 @@ Information about project "TestApp":
       -- Mock list_schemes to return test schemes
       local original_list_schemes = schemes.list_schemes
       schemes.list_schemes = function(project_path)
-        return {'TestApp', 'TestAppTests', 'WidgetExtension'}
+        return { 'TestApp', 'TestAppTests', 'WidgetExtension' }
       end
-      
+
       local result = schemes.validate_scheme('/path/to/project.xcodeproj', 'NonExistentScheme')
       assert.is_false(result)
-      
+
       -- Restore original function
       schemes.list_schemes = original_list_schemes
     end)
@@ -253,10 +253,10 @@ Information about project "TestApp":
       schemes.list_schemes = function(project_path)
         return {}
       end
-      
+
       local result = schemes.validate_scheme('/path/to/project.xcodeproj', 'TestApp')
       assert.is_false(result)
-      
+
       -- Restore original function
       schemes.list_schemes = original_list_schemes
     end)
@@ -272,7 +272,7 @@ Build settings for action build and target TestApp:
     PRODUCT_NAME = TestApp
     SWIFT_VERSION = 5.0
 ]]
-      
+
       local result = schemes.parse_build_settings(output)
       assert.equals('arm64', result.ARCHS)
       assert.equals('/Users/user/Library/Developer/Xcode/DerivedData/TestApp', result.BUILD_DIR)
@@ -294,7 +294,7 @@ Build settings for action build and target TestApp:
     PRODUCT_NAME = TestApp
     Another invalid line
 ]]
-      
+
       local result = schemes.parse_build_settings(output)
       assert.equals('arm64', result.ARCHS)
       assert.equals('TestApp', result.PRODUCT_NAME)
@@ -307,7 +307,7 @@ Build settings:
     ARCHS =   arm64   
     PRODUCT_NAME = TestApp 
 ]]
-      
+
       local result = schemes.parse_build_settings(output)
       assert.equals('arm64', result.ARCHS)
       assert.equals('TestApp', result.PRODUCT_NAME)
@@ -319,7 +319,7 @@ Build settings:
       -- Mock utils.execute_command
       local utils = require('xcode-build-server.utils')
       local original_execute_command = utils.execute_command
-      
+
       utils.execute_command = function(cmd, opts)
         assert.is_not_nil(cmd:find('-workspace'))
         assert.is_not_nil(cmd:find('TestApp.xcworkspace'))
@@ -328,15 +328,15 @@ Build settings:
         assert.is_not_nil(cmd:find('-showBuildSettings'))
         return 'ARCHS = arm64', nil
       end
-      
+
       local original_parse = schemes.parse_build_settings
       schemes.parse_build_settings = function(output)
-        return {ARCHS = 'arm64'}
+        return { ARCHS = 'arm64' }
       end
-      
+
       local result = schemes.get_scheme_info('/path/to/TestApp.xcworkspace', 'TestScheme')
-      assert.same({ARCHS = 'arm64'}, result)
-      
+      assert.same({ ARCHS = 'arm64' }, result)
+
       -- Restore original functions
       utils.execute_command = original_execute_command
       schemes.parse_build_settings = original_parse
@@ -346,7 +346,7 @@ Build settings:
       -- Mock utils.execute_command
       local utils = require('xcode-build-server.utils')
       local original_execute_command = utils.execute_command
-      
+
       utils.execute_command = function(cmd, opts)
         assert.is_not_nil(cmd:find('-project'))
         assert.is_not_nil(cmd:find('TestApp.xcodeproj'))
@@ -355,15 +355,15 @@ Build settings:
         assert.is_not_nil(cmd:find('-showBuildSettings'))
         return 'ARCHS = arm64', nil
       end
-      
+
       local original_parse = schemes.parse_build_settings
       schemes.parse_build_settings = function(output)
-        return {ARCHS = 'arm64'}
+        return { ARCHS = 'arm64' }
       end
-      
+
       local result = schemes.get_scheme_info('/path/to/TestApp.xcodeproj', 'TestScheme')
-      assert.same({ARCHS = 'arm64'}, result)
-      
+      assert.same({ ARCHS = 'arm64' }, result)
+
       -- Restore original functions
       utils.execute_command = original_execute_command
       schemes.parse_build_settings = original_parse
@@ -373,14 +373,14 @@ Build settings:
       -- Mock utils.execute_command to fail
       local utils = require('xcode-build-server.utils')
       local original_execute_command = utils.execute_command
-      
+
       utils.execute_command = function(cmd, opts)
         return nil, 'Command failed'
       end
-      
+
       local result = schemes.get_scheme_info('/path/to/TestApp.xcodeproj', 'TestScheme')
       assert.is_nil(result)
-      
+
       -- Restore original function
       utils.execute_command = original_execute_command
     end)

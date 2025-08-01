@@ -10,7 +10,7 @@ describe('config', function()
     it('uses defaults when no options provided', function()
       config.setup()
       local cfg = config.get()
-      
+
       assert.equals(3, cfg.search_depth)
       assert.equals(10000, cfg.timeout)
       assert.is_false(cfg.auto_setup)
@@ -25,7 +25,7 @@ describe('config', function()
         auto_setup = true,
         restart_lsp = false,
       })
-      
+
       local cfg = config.get()
       assert.equals(5, cfg.search_depth)
       assert.equals(15000, cfg.timeout)
@@ -42,7 +42,7 @@ describe('config', function()
           },
         },
       })
-      
+
       local cfg = config.get()
       assert.equals('telescope', cfg.picker.backend)
       assert.equals('ivy', cfg.picker.telescope.theme)
@@ -62,10 +62,10 @@ describe('config', function()
         assert.is_not_nil(cmd:find('TestScheme'))
         return '{"buildServer": "config"}', nil
       end
-      
+
       local result = config.generate_buildserver_config('/path/to/TestApp.xcodeproj', 'TestScheme')
       assert.equals('{"buildServer": "config"}', result)
-      
+
       -- Restore original function
       require('xcode-build-server.utils').execute_command = original_execute
     end)
@@ -80,10 +80,11 @@ describe('config', function()
         assert.is_not_nil(cmd:find('TestScheme'))
         return '{"buildServer": "config"}', nil
       end
-      
-      local result = config.generate_buildserver_config('/path/to/TestApp.xcworkspace', 'TestScheme')
+
+      local result =
+        config.generate_buildserver_config('/path/to/TestApp.xcworkspace', 'TestScheme')
       assert.equals('{"buildServer": "config"}', result)
-      
+
       -- Restore original function
       require('xcode-build-server.utils').execute_command = original_execute
     end)
@@ -94,10 +95,10 @@ describe('config', function()
       require('xcode-build-server.utils').execute_command = function(cmd, opts)
         return nil, 'Command failed'
       end
-      
+
       local result = config.generate_buildserver_config('/path/to/TestApp.xcodeproj', 'TestScheme')
       assert.is_nil(result)
-      
+
       -- Restore original function
       require('xcode-build-server.utils').execute_command = original_execute
     end)
@@ -109,10 +110,10 @@ describe('config', function()
         assert.is_nil(cmd:find('-scheme'))
         return '{"buildServer": "config"}', nil
       end
-      
+
       local result = config.generate_buildserver_config('/path/to/TestApp.xcodeproj')
       assert.equals('{"buildServer": "config"}', result)
-      
+
       -- Restore original function
       require('xcode-build-server.utils').execute_command = original_execute
     end)
@@ -128,11 +129,11 @@ describe('config', function()
         end
         return nil, 'Command not found'
       end
-      
+
       local available, version = config.check_xcode_build_server()
       assert.is_true(available)
       assert.equals('xcode-build-server 2.0.0', version)
-      
+
       -- Restore original function
       require('xcode-build-server.utils').execute_command = original_execute
     end)
@@ -143,11 +144,11 @@ describe('config', function()
       require('xcode-build-server.utils').execute_command = function(cmd, opts)
         return nil, 'Command not found'
       end
-      
+
       local available, error_msg = config.check_xcode_build_server()
       assert.is_false(available)
       assert.equals('xcode-build-server not found in PATH', error_msg)
-      
+
       -- Restore original function
       require('xcode-build-server.utils').execute_command = original_execute
     end)
@@ -163,10 +164,10 @@ describe('config', function()
         end
         return path
       end
-      
+
       local result = config.get_project_root_for_buildserver('/path/to/project/App.xcworkspace')
       assert.equals('/path/to/project', result)
-      
+
       -- Restore original function
       vim.fn.fnamemodify = original_fnamemodify
     end)
@@ -180,10 +181,10 @@ describe('config', function()
         end
         return path
       end
-      
+
       local result = config.get_project_root_for_buildserver('/path/to/project/App.xcodeproj')
       assert.equals('/path/to/project', result)
-      
+
       -- Restore original function
       vim.fn.fnamemodify = original_fnamemodify
     end)
@@ -192,13 +193,13 @@ describe('config', function()
   describe('defaults', function()
     it('has expected default values', function()
       local defaults = config.defaults
-      
+
       assert.equals(3, defaults.search_depth)
       assert.equals(10000, defaults.timeout)
       assert.is_false(defaults.auto_setup)
       assert.is_true(defaults.restart_lsp)
       assert.equals('xcode-build-server', defaults.build_server_path)
-      
+
       -- Check picker defaults
       assert.equals('vim_ui', defaults.picker.backend)
       assert.is_table(defaults.picker.telescope)

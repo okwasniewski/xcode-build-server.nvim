@@ -63,12 +63,12 @@ describe('utils', function()
   describe('split', function()
     it('splits string by delimiter', function()
       local result = utils.split('foo,bar,baz', ',')
-      assert.same({'foo', 'bar', 'baz'}, result)
+      assert.same({ 'foo', 'bar', 'baz' }, result)
     end)
 
     it('splits string by space', function()
       local result = utils.split('foo bar baz', ' ')
-      assert.same({'foo', 'bar', 'baz'}, result)
+      assert.same({ 'foo', 'bar', 'baz' }, result)
     end)
 
     it('handles empty string', function()
@@ -78,12 +78,12 @@ describe('utils', function()
 
     it('handles string without delimiter', function()
       local result = utils.split('foobar', ',')
-      assert.same({'foobar'}, result)
+      assert.same({ 'foobar' }, result)
     end)
 
     it('handles consecutive delimiters', function()
       local result = utils.split('foo,,bar', ',')
-      assert.same({'foo', 'bar'}, result)
+      assert.same({ 'foo', 'bar' }, result)
     end)
   end)
 
@@ -122,10 +122,10 @@ describe('utils', function()
       if file then
         file:write('test')
         file:close()
-        
+
         local result = utils.dir_exists(temp_file)
         assert.is_false(result)
-        
+
         -- Clean up
         os.remove(temp_file)
       end
