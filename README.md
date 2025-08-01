@@ -54,8 +54,76 @@ require('xcode-build-server').setup({
   auto_setup = true,          -- Auto-setup when opening Xcode projects
   restart_lsp = true,         -- Restart LSP after configuration
   build_server_path = "xcode-build-server",  -- Path to executable
+  picker = {
+    backend = "vim_ui",       -- Options: "vim_ui", "telescope", "fzf"
+    telescope = {
+      theme = "dropdown",
+      layout_config = {
+        width = 0.8,
+        height = 0.6,
+      }
+    },
+    fzf = {
+      winopts = {
+        width = 0.8,
+        height = 0.6,
+      }
+    }
+  }
 })
 ```
+
+### Picker Configuration
+
+The plugin supports multiple picker backends for selecting projects and schemes:
+
+#### Default vim.ui.select
+```lua
+require('xcode-build-server').setup({
+  picker = {
+    backend = "vim_ui"  -- Default Neovim picker
+  }
+})
+```
+
+#### Telescope Integration
+Requires [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim):
+
+```lua
+require('xcode-build-server').setup({
+  picker = {
+    backend = "telescope",
+    telescope = {
+      theme = "dropdown",     -- or "ivy", "cursor", etc.
+      layout_config = {
+        width = 0.8,
+        height = 0.6,
+        preview_cutoff = 120,
+      }
+    }
+  }
+})
+```
+
+#### FZF-lua Integration  
+Requires [fzf-lua](https://github.com/ibhagwan/fzf-lua):
+
+```lua
+require('xcode-build-server').setup({
+  picker = {
+    backend = "fzf",
+    fzf = {
+      winopts = {
+        width = 0.8,
+        height = 0.6,
+        border = "rounded",
+      }
+    }
+  }
+})
+```
+
+The plugin automatically falls back to `vim.ui.select` if the configured picker is not available.
 
 ## Usage
 

@@ -2,6 +2,7 @@ local utils = require("xcode-build-server.utils")
 local finder = require("xcode-build-server.finder")
 local schemes = require("xcode-build-server.schemes")
 local config = require("xcode-build-server.config")
+local picker = require("xcode-build-server.picker")
 
 local M = {}
 
@@ -29,7 +30,7 @@ function M.select_project(projects, callback)
     })
   end
   
-  vim.ui.select(items, {
+  picker.select(items, {
     prompt = "Select Xcode project:",
     format_item = function(item)
       return item.text
@@ -58,7 +59,7 @@ function M.select_scheme(project_path, callback)
   
   local default_scheme = schemes.get_default_scheme(scheme_list)
   
-  vim.ui.select(scheme_list, {
+  picker.select(scheme_list, {
     prompt = "Select scheme:",
     format_item = function(scheme)
       if scheme == default_scheme then

@@ -9,6 +9,25 @@ M.defaults = {
   auto_setup = true,
   restart_lsp = true,
   build_server_path = "xcode-build-server",
+  picker = {
+    -- Options: "vim_ui", "telescope", "fzf"
+    backend = "vim_ui",
+    -- Optional telescope-specific options
+    telescope = {
+      theme = "dropdown",
+      layout_config = {
+        width = 0.8,
+        height = 0.6,
+      }
+    },
+    -- Optional fzf-specific options
+    fzf = {
+      winopts = {
+        width = 0.8,
+        height = 0.6,
+      }
+    }
+  }
 }
 
 local user_config = {}
