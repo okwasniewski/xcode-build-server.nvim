@@ -73,18 +73,10 @@ function M.select_scheme(project_path, callback)
 end
 
 function M.confirm_setup(project, scheme, callback)
-  local message = string.format(
-    'Setup xcode-build-server for:\n'
-      .. 'Project: %s (%s)\n'
-      .. 'Scheme: %s\n\n'
-      .. 'This will create/update buildServer.json',
-    project.name,
-    project.type,
-    scheme
-  )
+  local prompt = string.format('Setup %s with scheme: %s? (y/N): ', project.name, scheme)
 
   vim.ui.input({
-    prompt = message .. '\n\nContinue? (y/N): ',
+    prompt = prompt,
   }, function(input)
     local confirmed = input and input:lower():match('^y')
     callback(confirmed == 'y')
