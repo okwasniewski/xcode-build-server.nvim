@@ -85,22 +85,19 @@ function M.run_buildserver_config(project_dir, project_path, scheme_name)
 
   local cmd = table.concat(cmd_parts, ' ')
 
-  -- Change to project directory and run the command
-  local original_cwd = vim.fn.getcwd()
-  vim.cmd('cd ' .. vim.fn.fnameescape(project_dir))
+  -- Always run from the root directory (where nvim is opened)
+  local root_dir = vim.fn.getcwd()
+  utils.info('Running xcode-build-server from root directory: %s', root_dir)
 
-  utils.info('Running: %s (in %s)', cmd, project_dir)
+  utils.info('Running: %s (in %s)', cmd, root_dir)
   local output, err = utils.execute_command(cmd, { timeout = 15000 })
-
-  -- Restore original directory
-  vim.cmd('cd ' .. vim.fn.fnameescape(original_cwd))
 
   if not output then
     utils.error('Failed to generate buildServer.json: %s', err or 'Unknown error')
     return false
   end
 
-  local config_file = utils.path_join(project_dir, 'buildServer.json')
+  local config_file = utils.path_join(root_dir, 'buildServer.json')
   if utils.file_exists(config_file) then
     utils.info('Created buildServer.json: %s', config_file)
     return true
@@ -116,7 +113,8 @@ function M.write_buildserver_config(project_dir, project_path, scheme_name)
 end
 
 function M.update_buildserver_config(project_dir, project_path, scheme_name)
-  local config_file = utils.path_join(project_dir, 'buildServer.json')
+  local root_dir = vim.fn.getcwd()
+  local config_file = utils.path_join(root_dir, 'buildServer.json')
 
   if utils.file_exists(config_file) then
     local backup_file = config_file .. '.backup'
