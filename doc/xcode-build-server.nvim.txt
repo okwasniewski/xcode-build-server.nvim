@@ -3,19 +3,19 @@
 ==============================================================================
 Table of Contents                  *xcode-build-server.nvim-table-of-contents*
 
-1. xcode-build-server.nvim   |xcode-build-server.nvim-xcode-build-server.nvim|
-  - Features        |xcode-build-server.nvim-xcode-build-server.nvim-features|
-  - Requirements|xcode-build-server.nvim-xcode-build-server.nvim-requirements|
-  - Installation|xcode-build-server.nvim-xcode-build-server.nvim-installation|
-  - Configuration|xcode-build-server.nvim-xcode-build-server.nvim-configuration|
-  - Usage              |xcode-build-server.nvim-xcode-build-server.nvim-usage|
-  - How it Works|xcode-build-server.nvim-xcode-build-server.nvim-how-it-works|
-  - Troubleshooting|xcode-build-server.nvim-xcode-build-server.nvim-troubleshooting|
-  - Contributing|xcode-build-server.nvim-xcode-build-server.nvim-contributing|
-  - License          |xcode-build-server.nvim-xcode-build-server.nvim-license|
+1. xcode-build-server.nvim ⚙️|xcode-build-server.nvim-xcode-build-server.nvim-⚙️|
+  - Features |xcode-build-server.nvim-xcode-build-server.nvim-⚙️-features|
+  - Requirements|xcode-build-server.nvim-xcode-build-server.nvim-⚙️-requirements|
+  - Installation|xcode-build-server.nvim-xcode-build-server.nvim-⚙️-installation|
+  - Configuration|xcode-build-server.nvim-xcode-build-server.nvim-⚙️-configuration|
+  - Usage       |xcode-build-server.nvim-xcode-build-server.nvim-⚙️-usage|
+  - How it Works|xcode-build-server.nvim-xcode-build-server.nvim-⚙️-how-it-works|
+  - Troubleshooting|xcode-build-server.nvim-xcode-build-server.nvim-⚙️-troubleshooting|
+  - Contributing|xcode-build-server.nvim-xcode-build-server.nvim-⚙️-contributing|
+  - License   |xcode-build-server.nvim-xcode-build-server.nvim-⚙️-license|
 
 ==============================================================================
-1. xcode-build-server.nvim   *xcode-build-server.nvim-xcode-build-server.nvim*
+1. xcode-build-server.nvim ⚙️*xcode-build-server.nvim-xcode-build-server.nvim-⚙️*
 
 A Neovim plugin that seamlessly integrates xcode-build-server to enable
 sourcekit-lsp support for Xcode projects. This allows iOS/macOS developers to
@@ -23,7 +23,7 @@ use Neovim with full LSP capabilities for Swift, C, C++, Objective-C, and
 Objective-C++ development.
 
 
-FEATURES            *xcode-build-server.nvim-xcode-build-server.nvim-features*
+FEATURES     *xcode-build-server.nvim-xcode-build-server.nvim-⚙️-features*
 
 - 🔍 **Automatic Project Discovery**: Finds Xcode projects and workspaces in your directory tree
 - 🎯 **Scheme Selection**: Interactive picker for available build schemes
@@ -33,7 +33,7 @@ FEATURES            *xcode-build-server.nvim-xcode-build-server.nvim-features*
 - 🚀 **Auto Setup**: Optional automatic configuration when opening Xcode projects (opt-in)
 
 
-REQUIREMENTS    *xcode-build-server.nvim-xcode-build-server.nvim-requirements*
+REQUIREMENTS*xcode-build-server.nvim-xcode-build-server.nvim-⚙️-requirements*
 
 - Neovim >= 0.8.0
 - xcode-build-server <https://github.com/SolaWing/xcode-build-server> (install via: `brew install xcode-build-server`)
@@ -41,7 +41,7 @@ REQUIREMENTS    *xcode-build-server.nvim-xcode-build-server.nvim-requirements*
 - sourcekit-lsp (usually included with Xcode)
 
 
-INSTALLATION    *xcode-build-server.nvim-xcode-build-server.nvim-installation*
+INSTALLATION*xcode-build-server.nvim-xcode-build-server.nvim-⚙️-installation*
 
 
 USING LAZY.NVIM ~
@@ -69,7 +69,7 @@ USING PACKER.NVIM ~
 <
 
 
-CONFIGURATION  *xcode-build-server.nvim-xcode-build-server.nvim-configuration*
+CONFIGURATION*xcode-build-server.nvim-xcode-build-server.nvim-⚙️-configuration*
 
 The plugin works out of the box with sensible defaults. You can customize it by
 passing options to the setup function:
@@ -77,7 +77,7 @@ passing options to the setup function:
 >lua
     require('xcode-build-server').setup({
       search_depth = 3,           -- How deep to search for projects
-      timeout = 10000,            -- Command timeout in milliseconds  
+      timeout = 10000,            -- Command timeout in milliseconds
       auto_setup = false,         -- Auto-setup when opening Xcode projects (opt-in)
       restart_lsp = true,         -- Restart LSP after configuration
       build_server_path = "xcode-build-server",  -- Path to executable
@@ -173,13 +173,15 @@ You can enable automatic configuration by setting `auto_setup = true`:
     })
 <
 
-When enabled, auto setup will: - Automatically detect Xcode projects when you
-open files - For single scheme projects: configure silently - For multiple
-schemes: prompt you to select a scheme using your configured picker - Skip
-projects that already have buildServer.json
+When enabled, auto setup will:
+
+- Automatically detect Xcode projects when you open files
+- For single scheme projects: configure silently
+- For multiple schemes: prompt you to select a scheme using your configured picker
+- Skip projects that already have buildServer.json
 
 
-USAGE                  *xcode-build-server.nvim-xcode-build-server.nvim-usage*
+USAGE           *xcode-build-server.nvim-xcode-build-server.nvim-⚙️-usage*
 
 
 INTERACTIVE SETUP ~
@@ -190,8 +192,12 @@ Run the setup command to configure xcode-build-server for your project:
     :XcodeBuildServerSetup
 <
 
-This will: 1. Find available Xcode projects/workspaces 2. Let you select a
-project 3. Let you select a scheme 4. Generate `buildServer.json` configuration
+This will:
+
+1. Find available Xcode projects/workspaces
+2. Let you select a project
+3. Let you select a scheme
+4. Generate `buildServer.json` configuration
 5. Optionally restart LSP clients
 
 
@@ -213,7 +219,7 @@ Restart sourcekit LSP clients after configuration changes:
 <
 
 
-HOW IT WORKS    *xcode-build-server.nvim-xcode-build-server.nvim-how-it-works*
+HOW IT WORKS*xcode-build-server.nvim-xcode-build-server.nvim-⚙️-how-it-works*
 
 The plugin bridges the gap between Apple’s sourcekit-lsp and Xcode projects
 by:
@@ -230,7 +236,7 @@ by:
 
 
 
-TROUBLESHOOTING*xcode-build-server.nvim-xcode-build-server.nvim-troubleshooting*
+TROUBLESHOOTING*xcode-build-server.nvim-xcode-build-server.nvim-⚙️-troubleshooting*
 
 
 LSP FEATURES AREN’T WORKING ~
@@ -256,12 +262,12 @@ NO SCHEMES FOUND ~
 - Check that you’re in the correct directory
 
 
-CONTRIBUTING    *xcode-build-server.nvim-xcode-build-server.nvim-contributing*
+CONTRIBUTING*xcode-build-server.nvim-xcode-build-server.nvim-⚙️-contributing*
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 
-LICENSE              *xcode-build-server.nvim-xcode-build-server.nvim-license*
+LICENSE       *xcode-build-server.nvim-xcode-build-server.nvim-⚙️-license*
 
 MIT
 
