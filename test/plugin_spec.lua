@@ -27,7 +27,7 @@ describe('xcode-build-server', function()
       local results = xcode_build_server.health()
       assert.is_table(results)
       assert.is_true(#results > 0)
-      
+
       for _, result in ipairs(results) do
         assert.is_string(result.name)
         assert.is_string(result.status)
