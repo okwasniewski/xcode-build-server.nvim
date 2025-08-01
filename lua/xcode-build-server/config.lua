@@ -1,5 +1,4 @@
 local utils = require("xcode-build-server.utils")
-local json = vim.fn.json_encode
 
 local M = {}
 
@@ -41,37 +40,79 @@ function M.get()
 end
 
 function M.generate_buildserver_config(project_path, scheme_name)
-  local config = {
-    name = "xcode-build-server",
-    version = "1.0.0", 
-    bspVersion = "2.0.0",
-    languages = { "swift", "c", "cpp", "objective-c", "objective-cpp" },
-    argv = {
-      M.get().build_server_path,
-      "build-server",
-      "--project", project_path,
-      "--scheme", scheme_name
-    }
-  }
+  local cmd_parts = { M.get().build_server_path, "config" }
   
-  return json(config)
+  if project_path:match("%.xcworkspace$") then
+    table.insert(cmd_parts, "-workspace")
+    table.insert(cmd_parts, string.format("'%s'", project_path))
+  else
+    table.insert(cmd_parts, "-project") 
+    table.insert(cmd_parts, string.format("'%s'", project_path))
+  end
+  
+  if scheme_name then
+    table.insert(cmd_parts, "-scheme")
+    table.insert(cmd_parts, string.format("'%s'", scheme_name))
+  end
+  
+  local cmd = table.concat(cmd_parts, " ")
+  utils.info("Running: %s", cmd)
+  local output, err = utils.execute_command(cmd, { timeout = 15000 })
+  
+  if not output then
+    utils.error("Failed to generate buildServer.json: %s", err or "Unknown error")
+    return nil
+  end
+  
+  return utils.trim(output)
 end
 
-function M.write_buildserver_config(project_dir, project_path, scheme_name)
-  local config_content = M.generate_buildserver_config(project_path, scheme_name)
-  local config_file = utils.path_join(project_dir, "buildServer.json")
+function M.run_buildserver_config(project_dir, project_path, scheme_name)
+  local cmd_parts = { M.get().build_server_path, "config" }
   
-  local file = io.open(config_file, "w")
-  if not file then
-    utils.error("Failed to create buildServer.json: %s", config_file)
+  if project_path:match("%.xcworkspace$") then
+    table.insert(cmd_parts, "-workspace")
+    table.insert(cmd_parts, string.format("'%s'", project_path))
+  else
+    table.insert(cmd_parts, "-project") 
+    table.insert(cmd_parts, string.format("'%s'", project_path))
+  end
+  
+  if scheme_name then
+    table.insert(cmd_parts, "-scheme")
+    table.insert(cmd_parts, string.format("'%s'", scheme_name))
+  end
+  
+  local cmd = table.concat(cmd_parts, " ")
+  
+  -- Change to project directory and run the command
+  local original_cwd = vim.fn.getcwd()
+  vim.cmd("cd " .. vim.fn.fnameescape(project_dir))
+  
+  utils.info("Running: %s (in %s)", cmd, project_dir)
+  local output, err = utils.execute_command(cmd, { timeout = 15000 })
+  
+  -- Restore original directory
+  vim.cmd("cd " .. vim.fn.fnameescape(original_cwd))
+  
+  if not output then
+    utils.error("Failed to generate buildServer.json: %s", err or "Unknown error")
     return false
   end
   
-  file:write(config_content)
-  file:close()
-  
-  utils.info("Created buildServer.json: %s", config_file)
-  return true
+  local config_file = utils.path_join(project_dir, "buildServer.json")
+  if utils.file_exists(config_file) then
+    utils.info("Created buildServer.json: %s", config_file)
+    return true
+  else
+    utils.error("buildServer.json was not created")
+    return false
+  end
+end
+
+function M.write_buildserver_config(project_dir, project_path, scheme_name)
+  -- Use the direct command approach which is more reliable
+  return M.run_buildserver_config(project_dir, project_path, scheme_name)
 end
 
 function M.update_buildserver_config(project_dir, project_path, scheme_name)
