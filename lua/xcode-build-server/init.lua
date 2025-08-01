@@ -54,7 +54,7 @@ function M.setup_interactive()
     end
 
     ui.select_scheme(selected_project.path, function(selected_scheme)
-      ui.confirm_setup(selected_project, selected_scheme, function(confirmed)
+      ui.confirm_setup(selected_scheme, function(confirmed)
         if confirmed then
           local project_dir = config.get_project_root_for_buildserver(selected_project.path)
           local success =

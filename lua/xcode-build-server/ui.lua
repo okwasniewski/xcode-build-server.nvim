@@ -72,14 +72,14 @@ function M.select_scheme(project_path, callback)
   end)
 end
 
-function M.confirm_setup(project, scheme, callback)
-  local prompt = string.format('Setup %s with scheme: %s? (y/N): ', project.name, scheme)
+function M.confirm_setup(scheme, callback)
+  local prompt = string.format('Setup scheme: %s? (Y/n): ', scheme)
 
   vim.ui.input({
     prompt = prompt,
   }, function(input)
-    local confirmed = input and input:lower():match('^y')
-    callback(confirmed == 'y')
+    local confirmed = not input or input:lower():match('^y') or input == ''
+    callback(confirmed)
   end)
 end
 
