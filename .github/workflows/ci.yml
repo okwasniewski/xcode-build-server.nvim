@@ -26,7 +26,7 @@ jobs:
       - name: panvimdoc
         uses: kdheepak/panvimdoc@main
         with:
-          vimdoc: nvim-plugin-template.nvim
+          vimdoc: xcode-build-server.nvim
           treesitter: true
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
