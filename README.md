@@ -1,12 +1,27 @@
 # xcode-build-server.nvim ⚙️
 
-A Neovim plugin that seamlessly integrates xcode-build-server to enable sourcekit-lsp support for Xcode projects. This allows iOS/macOS developers to use Neovim with full LSP capabilities for Swift, C, C++, Objective-C, and Objective-C++ development.
+A Neovim plugin that seamlessly integrates `xcode-build-server` to enable `sourcekit-lsp` support for Xcode projects. This allows iOS/macOS developers to use Neovim with full LSP capabilities for Swift, C, C++, Objective-C, and Objective-C++ development.
+
+## ⚠️ Before you dive in
+
+For a comprehensive iOS/macOS development setup in Neovim, you'll need more than just this plugin. Check out [The Complete Guide to iOS & macOS Development in Neovim](https://wojciechkulik.pl/ios/the-complete-guide-to-ios-macos-development-in-neovim) by [Wojciech Kulik](https://github.com/wojciech-kulik) for the complete setup including:
+
+- Swift syntax highlighting and treesitter configuration
+- Proper LSP setup with `sourcekit-lsp`
+- Debugging configuration with `nvim-dap`
+- Testing integration
+- Code formatting and linting
+- And much more!
+
+This guide is the best-in-class resource for getting a fully functional iOS development environment in Neovim.
+
+This plugin offers a streamlined way to integrate and generate necessary configurations for `xcode-build-server`, which is essential for enabling `sourcekit-lsp` support in Neovim.
 
 ## Features
 
 - 🔍 **Automatic Project Discovery**: Finds Xcode projects and workspaces in your directory tree
 - 🎯 **Scheme Selection**: Interactive picker for available build schemes
-- ⚙️ **Configuration Generation**: Automatically creates `buildServer.json` for sourcekit-lsp
+- ⚙️ **Configuration Generation**: Automatically creates `buildServer.json` for `sourcekit-lsp`
 - 🔄 **LSP Integration**: Seamless integration with Neovim's built-in LSP client
 - 🏥 **Health Checks**: Built-in diagnostics to verify your setup
 - 🚀 **Auto Setup**: Optional automatic configuration when opening Xcode projects (opt-in)
@@ -16,7 +31,7 @@ A Neovim plugin that seamlessly integrates xcode-build-server to enable sourceki
 - Neovim >= 0.8.0
 - [xcode-build-server](https://github.com/SolaWing/xcode-build-server) (install via: `brew install xcode-build-server`)
 - Xcode or Xcode Command Line Tools
-- sourcekit-lsp (usually included with Xcode)
+- `sourcekit-lsp` (usually included with Xcode)
 
 ## Installation
 
@@ -149,7 +164,7 @@ When enabled, auto setup will:
 
 ### Interactive Setup
 
-Run the setup command to configure xcode-build-server for your project:
+Run the setup command to configure `xcode-build-server` for your project:
 
 ```vim
 :XcodeBuildServerSetup
@@ -173,7 +188,7 @@ View current configuration status:
 
 ### Restart LSP
 
-Restart sourcekit LSP clients after configuration changes:
+Restart `sourcekit-lsp` clients after configuration changes:
 
 ```vim
 :XcodeBuildServerRestart
@@ -181,11 +196,11 @@ Restart sourcekit LSP clients after configuration changes:
 
 ## How it Works
 
-The plugin bridges the gap between Apple's sourcekit-lsp and Xcode projects by:
+The plugin bridges the gap between Apple's `sourcekit-lsp` and Xcode projects by:
 
 1. **Project Discovery**: Scans your directory tree for `.xcodeproj` and `.xcworkspace` files
 2. **Scheme Detection**: Uses `xcodebuild -list` to find available build schemes
-3. **Configuration Generation**: Creates a `buildServer.json` file that tells sourcekit-lsp how to communicate with xcode-build-server
+3. **Configuration Generation**: Creates a `buildServer.json` file that tells `sourcekit-lsp` how to communicate with `xcode-build-server`
 4. **LSP Integration**: Works with Neovim's built-in LSP client for features like:
    - Code completion
    - Diagnostics
@@ -197,13 +212,13 @@ The plugin bridges the gap between Apple's sourcekit-lsp and Xcode projects by:
 
 ### LSP features aren't working
 
-- Ensure sourcekit-lsp is installed (comes with Xcode)
+- Ensure `sourcekit-lsp` is installed (comes with Xcode)
 - Restart LSP clients with `:XcodeBuildServerRestart`
 - Check `:XcodeBuildServerStatus` for configuration issues
 
-### "xcode-build-server not found" error
+### "`xcode-build-server` not found" error
 
-Install xcode-build-server via Homebrew:
+Install `xcode-build-server` via Homebrew:
 
 ```bash
 brew install xcode-build-server
